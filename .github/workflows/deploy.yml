@@ -71,4 +71,3 @@ jobs:
       - name: Check the live website
         if: steps.current.outputs.deploy == 'true'
         run: npm run smoke -- https://cleanops.nz
-
