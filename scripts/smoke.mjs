@@ -22,11 +22,23 @@ for (let attempt = 1; attempt <= 6; attempt++) {
 			const html = await response.text();
 			assert.match(html, /CleanOps/, `${path}: unexpected website`);
 			assert.match(html, /<h1[\s>]/, `${path}: missing prerendered content`);
+			const iconLinks = html.match(/<link\b[^>]*rel="icon"[^>]*>/g) ?? [];
+			assert.ok(iconLinks.some((link) => link.includes('href="/favicon.svg"')), `${path}: missing SVG favicon link`);
+			assert.ok(iconLinks.some((link) => link.includes('href="/favicon.ico"')), `${path}: missing ICO favicon link`);
 			const canonical = html.match(/<link\b[^>]*rel="canonical"[^>]*>/)?.[0];
 			assert.ok(canonical?.includes(`href="${canonicalOrigin}${path === "/" ? "" : path}"`) || canonical?.includes(`href="${canonicalOrigin}${path}"`), `${path}: missing canonical URL`);
 		}
 		const xero = await check("/brands/xero.svg");
 		assert.match(xero.headers.get("content-type") ?? "", /image\/svg\+xml/);
+		for (const [path, type] of [
+			["/favicon.svg", /image\/svg\+xml/],
+			["/favicon.ico", /image\/(?:x-icon|vnd\.microsoft\.icon)/],
+			["/favicon-32x32.png", /image\/png/],
+			["/apple-touch-icon.png", /image\/png/],
+		]) {
+			const icon = await check(path);
+			assert.match(icon.headers.get("content-type") ?? "", type, `${path}: incorrect image type`);
+		}
 		await check("/sitemap.xml");
 		await check("/robots.txt");
 		console.log(`All ${pages.length} pages and public assets passed at ${origin}`);
