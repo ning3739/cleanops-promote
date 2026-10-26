@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en-NZ">
+<head>
+<meta charset="utf-8">
+<title>CleanOps — how it works</title>
+<link rel="stylesheet" href="../../node_modules/@fontsource-variable/inter/index.css">
+<link rel="stylesheet" href="../../src/styles/tokens.css">
+<script src="icons.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #0b1016; font-family: "Inter Variable", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  #stage { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+  .scene { position: absolute; inset: 0; opacity: 0; overflow: hidden; }
+  .dark { background: #0d1218; color: #f1f4f7; }
+  .light { background: #f6f8fa; color: #141b24; }
+  .tint { background: #ddf3f9; color: #141b24; }
+  .rings::before { content: ""; position: absolute; inset: 0; background: repeating-radial-gradient(circle at 50% 110%, transparent 0 89px, rgba(255,255,255,.07) 89px 90px); -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 100%, #000 10%, transparent 75%); }
+
+  /* Captions */
+  .cap { position: absolute; left: 96px; top: 84px; max-width: 760px; z-index: 30; }
+  .cap.right { left: auto; right: 96px; text-align: left; }
+  .kick { display: inline-flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #006d87; opacity: 0; }
+  .dark .kick { color: #3db6cf; }
+  .kick svg { width: 24px; height: 24px; }
+  .line { display: block; font-size: 64px; line-height: 1.04; font-weight: 650; letter-spacing: -0.03em; margin-top: 14px; opacity: 0; }
+  .line.brand { color: #006d87; }
+  .dark .line.brand { color: #3db6cf; }
+
+  /* Desktop window around a 1440x900 capture */
+  .winpos { position: absolute; left: 829px; top: 232px; zoom: .82; } /* 680, 190 on the stage once zoomed */
+  .win { position: relative; width: 1440px; border-radius: 16px; border-top-right-radius: 4px; overflow: hidden; background: #fff; box-shadow: 0 50px 120px -30px rgba(10,20,30,.45), 0 0 0 1px rgba(20,30,40,.08); transform-origin: 0 0; }
+  .bar { height: 34px; background: #eef1f4; display: flex; align-items: center; gap: 8px; padding: 0 14px; border-bottom: 1px solid #dfe4e9; }
+  .bar i { width: 11px; height: 11px; border-radius: 50%; background: #c9d0d7; }
+  .vp { position: relative; width: 1440px; height: 900px; overflow: hidden; }
+  .layer { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; transform-origin: 0 0; }
+  .layer > img { width: 1440px; height: 900px; display: block; }
+
+  /* Overlays inside a layer use the capture's own 1440x900 coordinates */
+  .ring { position: absolute; border: 4px solid #3db6cf; border-radius: 12px; box-shadow: 0 0 0 8px rgba(61,182,207,.22); opacity: 0; }
+  .ring.bad { border-color: #e5484d; box-shadow: 0 0 0 8px rgba(229,72,77,.2); }
+  .ring.ok { border-color: #2f9e6f; box-shadow: 0 0 0 8px rgba(47,158,111,.2); }
+
+  /* Chips */
+  .chip { position: absolute; z-index: 40; display: inline-flex; align-items: center; gap: 12px; padding: 16px 24px; border-radius: 999px; background: #fff; color: #141b24; font-size: 26px; font-weight: 600; box-shadow: 0 20px 50px -12px rgba(10,20,30,.35); opacity: 0; white-space: nowrap; }
+  .chip svg { width: 28px; height: 28px; color: #006d87; }
+  .chip.ok svg { color: #2f9e6f; }
+  .chip.dark { background: #141b24; color: #fff; }
+  .chip.dark svg { color: #3db6cf; }
+
+  /* iPhone body, same proportions as the site's frame */
+  .iphone { position: absolute; width: 380px; padding: 4px; border-radius: 65px; background: linear-gradient(135deg,#8d9299 0%,#3b3f45 18%,#24272c 50%,#43474e 82%,#9a9fa6 100%); box-shadow: inset 0 0 0 1.3px rgba(255,255,255,.28), 0 40px 80px -20px rgba(10,20,30,.55); opacity: 0; z-index: 20; }
+  .iphone .glass { position: relative; padding: 9.5px; border-radius: 61px; background: #050607; }
+  .iphone .glass::after { content: ""; position: absolute; top: 19px; left: 50%; width: 110px; height: 32px; transform: translateX(-50%); border-radius: 999px; background: #000; }
+  .iphone .screen { position: relative; border-radius: 51px; overflow: hidden; aspect-ratio: 1206 / 2622; background: #fff; }
+  .iphone .screen img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+  .photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8,12,17,.86) 0%, rgba(8,12,17,.55) 45%, rgba(8,12,17,.1) 100%); }
+
+  .cursor { position: absolute; width: 44px; height: 44px; z-index: 60; opacity: 0; filter: drop-shadow(0 6px 10px rgba(0,0,0,.35)); }
+  .ripple { position: absolute; width: 90px; height: 90px; margin: -45px 0 0 -45px; border-radius: 50%; border: 4px solid #3db6cf; opacity: 0; z-index: 55; }
+  .stamp { position: absolute; z-index: 50; display: inline-flex; align-items: center; gap: 14px; padding: 18px 30px; border-radius: 14px; background: #2f9e6f; color: #fff; font-size: 34px; font-weight: 700; opacity: 0; box-shadow: 0 24px 60px -14px rgba(20,90,60,.55); }
+  .stamp svg { width: 38px; height: 38px; }
+
+  .logo { width: 120px; height: 120px; color: #3db6cf; opacity: 0; }
+  .big { font-size: 112px; line-height: 1; font-weight: 700; letter-spacing: -0.045em; opacity: 0; }
+  .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .cta { margin-top: 48px; display: inline-flex; align-items: center; gap: 14px; padding: 24px 40px; border-radius: 12px; background: #3db6cf; color: #0b121a; font-size: 34px; font-weight: 650; opacity: 0; }
+  .url { margin-top: 26px; font-size: 28px; color: #9aa7b4; opacity: 0; }
+  .progress { position: absolute; left: 0; bottom: 0; height: 6px; width: 1920px; background: #3db6cf; transform-origin: 0 0; transform: scaleX(0); z-index: 100; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- S0 intro -->
+  <section class="scene dark rings" id="s0">
+    <div class="center">
+      <svg class="logo" id="s0logo" viewBox="0 0 26 26"><path fill="currentColor" fill-rule="evenodd" d="M13 0h11.4Q26 0 26 1.6V13A13 13 0 1 1 13 0Zm0 5.4a7.6 7.6 0 1 0 0 15.2 7.6 7.6 0 1 0 0-15.2Z"/></svg>
+      <div class="big" id="s0a" style="margin-top:56px">Prove the clean.</div>
+      <div class="big" id="s0b" style="margin-top:14px">Pay the crew.</div>
+      <div class="big" id="s0c" style="margin-top:14px;color:#3db6cf">Bill the same day.</div>
+    </div>
+  </section>
+
+  <!-- S1 office today -->
+  <section class="scene light" id="s1">
+    <div class="winpos"><div class="win" id="s1win">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="vp"><div class="layer" id="s1layer">
+        <img src="a/office-today.png" alt="">
+        <div class="ring" id="s1ring" style="left:300px;top:296px;width:170px;height:36px"></div>
+        <div class="ring" id="s1ring2" style="left:272px;top:357px;width:1135px;height:143px"></div>
+      </div></div>
+    </div></div>
+    <div class="cap" id="s1cap">
+      <div class="kick" data-icon="clock">07:30 · The office</div>
+      <span class="line">What needs you,</span>
+      <span class="line brand">on one screen.</span>
+    </div>
+  </section>
+
+  <!-- S2 schedule -->
+  <section class="scene light" id="s2">
+    <div class="winpos"><div class="win" id="s2win">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="vp"><div class="layer" id="s2layer">
+        <img src="a/office-schedule.png" alt="">
+        <div class="ring bad" id="s2bad1" style="left:766px;top:275px;width:200px;height:66px"></div>
+        <div class="ring bad" id="s2bad2" style="left:971px;top:275px;width:202px;height:66px"></div>
+        <div class="ring ok" id="s2ok" style="left:766px;top:417px;width:200px;height:65px"></div>
+      </div></div>
+    </div></div>
+    <div class="cap" id="s2cap">
+      <div class="kick" data-icon="users">The week</div>
+      <span class="line">Spot the gaps</span>
+      <span class="line brand">before Monday.</span>
+    </div>
+    <div class="chip" id="s2chip1" style="left:1000px;top:120px"><span data-icon="triangle-alert"></span>2 jobs, nobody going</div>
+    <div class="chip ok" id="s2chip2" style="left:1180px;top:870px"><span data-icon="circle-check"></span>Ben confirmed</div>
+  </section>
+
+  <!-- S3 on site -->
+  <section class="scene dark" id="s3">
+    <img class="photo" id="s3photo" src="a/vacuum.jpg" alt="">
+    <div class="shade"></div>
+    <div class="cap" id="s3cap" style="top:300px">
+      <div class="kick" data-icon="camera">On site</div>
+      <span class="line">One job.</span>
+      <span class="line">One checklist.</span>
+      <span class="line brand">Proof at every step.</span>
+    </div>
+    <div class="iphone" id="s3phone" style="left:1370px;top:120px">
+      <div class="glass"><div class="screen">
+        <img id="s3scrA" src="a/field-job.png" alt="">
+        <img id="s3scrB" src="a/field-checklist.png" alt="" style="opacity:0">
+      </div></div>
+    </div>
+    <div class="chip" id="s3chip1" style="left:1010px;top:560px"><span data-icon="camera"></span>Photo required</div>
+    <div class="chip" id="s3chip2" style="left:1070px;top:700px"><span data-icon="wifi-off"></span>Works offline</div>
+  </section>
+
+  <!-- S4 hours -->
+  <section class="scene tint" id="s4">
+    <div class="cap" id="s4cap" style="top:300px">
+      <div class="kick" data-icon="clock">Hours</div>
+      <span class="line">Hours come</span>
+      <span class="line brand">from the work.</span>
+    </div>
+    <div class="iphone" id="s4phone" style="left:1060px;top:110px">
+      <div class="glass"><div class="screen"><img src="a/field-hours.png" alt=""></div></div>
+    </div>
+    <div class="chip" id="s4c1" style="left:1500px;top:260px"><span data-icon="car"></span>Travel 25m</div>
+    <div class="chip" id="s4c2" style="left:1500px;top:390px"><span data-icon="clock"></span>13:00 – 15:00</div>
+    <div class="chip dark" id="s4c3" style="left:1500px;top:520px"><span data-icon="refresh-cw"></span>To Xero Payroll</div>
+  </section>
+
+  <!-- S5 review and approve -->
+  <section class="scene light" id="s5">
+    <div class="winpos"><div class="win" id="s5win">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="vp"><div class="layer" id="s5layer">
+        <img src="a/office-review.png" alt="">
+        <div class="ring" id="s5ring" style="left:855px;top:90px;width:575px;height:140px"></div>
+        <div class="ring" id="s5ring2" style="left:855px;top:490px;width:575px;height:330px"></div>
+      </div></div>
+    </div></div>
+    <div class="cap" id="s5cap">
+      <div class="kick" data-icon="badge-check">Review</div>
+      <span class="line">Hours, photos,</span>
+      <span class="line">checklist.</span>
+      <span class="line brand">One click.</span>
+    </div>
+    <svg class="cursor" id="s5cursor" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15 L12.5 22 L15.5 20.5 L12 14 L19 14 Z" fill="#141b24" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    <div class="ripple" id="s5ripple"></div>
+    <div class="stamp" id="s5stamp" style="left:1190px;top:500px"><span data-icon="circle-check"></span>Approved</div>
+  </section>
+
+  <!-- S6 invoice -->
+  <section class="scene light" id="s6">
+    <div class="winpos"><div class="win" id="s6win">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="vp"><div class="layer" id="s6layer">
+        <img src="a/office-invoice.png" alt="">
+        <div class="ring" id="s6ring" style="left:282px;top:522px;width:756px;height:28px"></div>
+      </div></div>
+    </div></div>
+    <div class="cap" id="s6cap">
+      <div class="kick" data-icon="receipt-text">Same day</div>
+      <span class="line">Approved job,</span>
+      <span class="line brand">invoice ready.</span>
+    </div>
+    <div class="chip" id="s6c1" style="left:96px;top:520px"><span data-icon="receipt-text"></span>GST 15% worked out</div>
+    <div class="chip dark" id="s6c2" style="left:96px;top:640px"><span data-icon="refresh-cw"></span>Synced with Xero</div>
+    <div class="chip ok" id="s6c3" style="left:96px;top:760px"><span data-icon="circle-check"></span>Paid</div>
+  </section>
+
+  <!-- S7 customer portal -->
+  <section class="scene tint" id="s7">
+    <div class="cap" id="s7cap" style="top:330px">
+      <div class="kick" data-icon="badge-check">Your customer</div>
+      <span class="line">They see</span>
+      <span class="line brand">the proof.</span>
+    </div>
+    <div class="iphone" id="s7p1" style="left:930px;top:120px">
+      <div class="glass"><div class="screen"><img src="a/portal-safari-past.png" alt=""></div></div>
+    </div>
+    <div class="iphone" id="s7p2" style="left:1380px;top:200px">
+      <div class="glass"><div class="screen"><img src="a/portal-safari-invoices.png" alt=""></div></div>
+    </div>
+  </section>
+
+  <!-- S8 end card -->
+  <section class="scene dark rings" id="s8">
+    <div class="center">
+      <svg class="logo" id="s8logo" viewBox="0 0 26 26"><path fill="currentColor" fill-rule="evenodd" d="M13 0h11.4Q26 0 26 1.6V13A13 13 0 1 1 13 0Zm0 5.4a7.6 7.6 0 1 0 0 15.2 7.6 7.6 0 1 0 0-15.2Z"/></svg>
+      <div class="big" id="s8a" style="margin-top:44px">CleanOps</div>
+      <div class="url" id="s8b" style="font-size:36px;color:#cfd7df">Job management for New Zealand cleaning companies</div>
+      <div class="cta" id="s8c">Start a 14-day trial</div>
+      <div class="url" id="s8d">cleanops.nz</div>
+    </div>
+  </section>
+
+  <div class="progress" id="progress"></div>
+</div>
+
+<script>
+  // Icons from lucide-react's own icon nodes.
+  for (const el of document.querySelectorAll("[data-icon]")) {
+    const svg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[el.dataset.icon]}</svg>`;
+    el.insertAdjacentHTML("afterbegin", svg);
+    if (el.tagName === "SPAN" && !el.textContent.trim()) el.outerHTML = svg;
+  }
+
+  const $ = (id) => document.getElementById(id);
+  const ease = { out: "cubic-bezier(.16,1,.3,1)", inOut: "cubic-bezier(.65,0,.35,1)", pop: "cubic-bezier(.34,1.56,.64,1)", lin: "linear" };
+  // Every animation fills forwards only; an element's starting state is its CSS.
+  const at = (el, t, d, kf, e = ease.out) => (typeof el === "string" ? $(el) : el).animate(kf, { delay: t * 1000, duration: d * 1000, fill: "forwards", easing: e });
+
+  const scene = (id, t0, t1) => { at(id, t0, 0.45, [{ opacity: 0 }, { opacity: 1 }], ease.lin); at(id, t1 - 0.45, 0.45, [{ opacity: 1 }, { opacity: 0 }], ease.lin); };
+  const caption = (capId, t0, t1) => {
+    const kids = [...$(capId).children];
+    kids.forEach((k, i) => {
+      at(k, t0 + 0.12 * i, 0.7, [{ opacity: 0, transform: "translateY(40px)" }, { opacity: 1, transform: "none" }]);
+      at(k, t1 - 0.5, 0.35, [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-24px)" }], ease.inOut);
+    });
+  };
+  const pop = (id, t, from = "translateY(24px) scale(.85)") => at(id, t, 0.55, [{ opacity: 0, transform: from }, { opacity: 1, transform: "none" }], ease.pop);
+  const ringPulse = (id, t) => {
+    at(id, t, 0.4, [{ opacity: 0, transform: "scale(1.15)" }, { opacity: 1, transform: "scale(1)" }], ease.out);
+  };
+  // Camera move: zoom the capture so point (x, y) of the 1440x900 capture lands at the window's (cx, cy).
+  const cam = (layer, t, d, from, to) => {
+    const tf = ({ s, x, y }) => `translate(${720 - x * s}px, ${450 - y * s}px) scale(${s})`;
+    at(layer, t, d, [{ transform: tf(from) }, { transform: tf(to) }], ease.inOut);
+  };
+  const HOME = { s: 1, x: 720, y: 450 };
+  const win = (id, t) => at(id, t, 0.9, [{ transform: "translateY(120px) scale(.96)", opacity: 0 }, { transform: "none", opacity: 1 }]);
+
+  // S0 intro 0–3.8
+  scene("s0", 0, 3.8);
+  pop("s0logo", 0.15, "scale(.4) rotate(-40deg)");
+  at("s0a", 0.55, 0.7, [{ opacity: 0, transform: "translateY(60px)" }, { opacity: 1, transform: "none" }]);
+  at("s0b", 1.05, 0.7, [{ opacity: 0, transform: "translateY(60px)" }, { opacity: 1, transform: "none" }]);
+  at("s0c", 1.55, 0.7, [{ opacity: 0, transform: "translateY(60px)" }, { opacity: 1, transform: "none" }]);
+  at("s0", 3.0, 0.8, [{ transform: "none" }, { transform: "scale(1.06)" }], ease.inOut);
+
+  // S1 office today 3.4–10.2
+  scene("s1", 3.4, 10.2);
+  win("s1win", 3.5);
+  caption("s1cap", 3.9, 10.2);
+  cam("s1layer", 5.4, 1.4, HOME, { s: 1.7, x: 640, y: 360 });
+  ringPulse("s1ring", 6.6);
+  ringPulse("s1ring2", 7.6);
+  cam("s1layer", 9.0, 1.1, { s: 1.7, x: 640, y: 360 }, { s: 1.9, x: 840, y: 420 });
+
+  // S2 schedule 9.8–15.8
+  scene("s2", 9.8, 15.8);
+  win("s2win", 9.9);
+  caption("s2cap", 10.3, 15.8);
+  cam("s2layer", 11.0, 1.3, HOME, { s: 1.75, x: 860, y: 380 });
+  ringPulse("s2bad1", 12.2); ringPulse("s2bad2", 12.4);
+  pop("s2chip1", 12.6);
+  ringPulse("s2ok", 13.6);
+  pop("s2chip2", 13.8);
+
+  // S3 on site 15.4–24.2
+  scene("s3", 15.4, 24.2);
+  at("s3photo", 15.4, 8.8, [{ transform: "scale(1.04)" }, { transform: "scale(1.16) translateX(-30px)" }], ease.lin);
+  caption("s3cap", 15.9, 24.2);
+  at("s3phone", 16.4, 1.0, [{ opacity: 0, transform: "translateY(260px) rotate(6deg)" }, { opacity: 1, transform: "rotate(-3deg)" }]);
+  at("s3scrB", 19.2, 0.5, [{ opacity: 0 }, { opacity: 1 }], ease.lin);
+  pop("s3chip1", 19.8);
+  pop("s3chip2", 21.0);
+
+  // S4 hours 23.8–29.2
+  scene("s4", 23.8, 29.2);
+  caption("s4cap", 24.2, 29.2);
+  at("s4phone", 24.2, 1.0, [{ opacity: 0, transform: "translateY(240px)" }, { opacity: 1, transform: "none" }]);
+  pop("s4c1", 25.4, "translateX(-40px) scale(.85)");
+  pop("s4c2", 26.1, "translateX(-40px) scale(.85)");
+  pop("s4c3", 26.8, "translateX(-40px) scale(.85)");
+
+  // S5 review 28.8–35.6
+  scene("s5", 28.8, 35.6);
+  win("s5win", 28.9);
+  caption("s5cap", 29.3, 35.6);
+  cam("s5layer", 30.0, 1.2, HOME, { s: 1.45, x: 1140, y: 330 });
+  ringPulse("s5ring", 30.9);
+  cam("s5layer", 31.6, 1.0, { s: 1.45, x: 1140, y: 330 }, { s: 1.45, x: 1140, y: 620 });
+  ringPulse("s5ring2", 32.3);
+  // Approve button: capture (1220, 853) → stage, under zoom s=1.45 focused on (1140,470), window at (390,184 incl. bar)
+  const Z = 0.82, ax = 680 + Z * (720 + (1220 - 1140) * 1.45), ay = 190 + Z * (34 + 450 + (853 - 620) * 1.45);
+  at("s5cursor", 32.3, 1.2, [{ opacity: 0, left: "1700px", top: "1000px" }, { opacity: 1, left: `${ax - 6}px`, top: `${ay - 4}px` }], ease.inOut);
+  at("s5ripple", 33.7, 0.6, [{ opacity: 1, left: `${ax}px`, top: `${ay}px`, transform: "scale(.3)" }, { opacity: 0, left: `${ax}px`, top: `${ay}px`, transform: "scale(1.6)" }], ease.out);
+  at("s5cursor", 33.65, 0.2, [{ transform: "scale(1)" }, { transform: "scale(.82)" }, { transform: "scale(1)" }], ease.lin);
+  pop("s5stamp", 33.95, "scale(1.6) rotate(-8deg)");
+
+  // S6 invoice 35.2–41.4
+  scene("s6", 35.2, 41.4);
+  win("s6win", 35.3);
+  caption("s6cap", 35.7, 41.4);
+  cam("s6layer", 36.3, 1.3, HOME, { s: 1.6, x: 660, y: 470 });
+  ringPulse("s6ring", 37.4);
+  pop("s6c1", 37.6, "translateX(-40px) scale(.85)");
+  pop("s6c2", 38.4, "translateX(-40px) scale(.85)");
+  pop("s6c3", 39.2, "translateX(-40px) scale(.85)");
+
+  // S7 portal 41.0–46.0
+  scene("s7", 41.0, 46.0);
+  caption("s7cap", 41.4, 46.0);
+  at("s7p1", 41.5, 1.0, [{ opacity: 0, transform: "translateY(260px) rotate(-6deg)" }, { opacity: 1, transform: "rotate(-4deg)" }]);
+  at("s7p2", 41.9, 1.0, [{ opacity: 0, transform: "translateY(260px) rotate(6deg)" }, { opacity: 1, transform: "rotate(4deg)" }]);
+  at("s7p1", 42.5, 3.5, [{ transform: "rotate(-4deg)" }, { transform: "rotate(-4deg) translateY(-30px)" }], ease.lin);
+  at("s7p2", 42.9, 3.1, [{ transform: "rotate(4deg)" }, { transform: "rotate(4deg) translateY(-50px)" }], ease.lin);
+
+  // S8 end 45.6–50
+  scene("s8", 45.6, 50.6);
+  pop("s8logo", 45.9, "scale(.4) rotate(-40deg)");
+  at("s8a", 46.2, 0.7, [{ opacity: 0, transform: "translateY(50px)" }, { opacity: 1, transform: "none" }]);
+  at("s8b", 46.5, 0.7, [{ opacity: 0, transform: "translateY(30px)" }, { opacity: 1, transform: "none" }]);
+  pop("s8c", 47.0);
+  at("s8d", 47.4, 0.7, [{ opacity: 0 }, { opacity: 1 }], ease.lin);
+
+  at("progress", 0, 50, [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], ease.lin);
+
+  window.DURATION = 50;
+  window.ready = Promise.all([...document.images].map((i) => i.decode().catch(() => {}))).then(() => document.fonts.ready);
+  window.seek = (t) => { for (const a of document.getAnimations()) { a.pause(); a.currentTime = t * 1000; } };
+</script>
+</body>
+</html>

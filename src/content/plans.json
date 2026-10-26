@@ -1,0 +1,57 @@
+{
+	"trialPlan": "PRO",
+	"storageOveragePerGb": "1.00",
+	"currency": "NZD",
+	"pricesExcludeGst": true,
+	"plans": [
+		{
+			"code": "STARTER",
+			"name": "Starter",
+			"monthly": "49.00",
+			"annual": "490.00",
+			"seats": 3,
+			"extraSeat": "12.00",
+			"storageGb": 5,
+			"features": []
+		},
+		{
+			"code": "PRO",
+			"name": "Pro",
+			"monthly": "129.00",
+			"annual": "1290.00",
+			"seats": 10,
+			"extraSeat": "9.00",
+			"storageGb": 25,
+			"features": [
+				"assets",
+				"job_costs",
+				"periodic_billing",
+				"reports",
+				"service_issues",
+				"teams",
+				"xero_payroll"
+			]
+		},
+		{
+			"code": "BUSINESS",
+			"name": "Business",
+			"monthly": "299.00",
+			"annual": "2990.00",
+			"seats": 25,
+			"extraSeat": "7.00",
+			"storageGb": 100,
+			"features": [
+				"assets",
+				"customer_portal",
+				"gps",
+				"job_costs",
+				"periodic_billing",
+				"priority_support",
+				"reports",
+				"service_issues",
+				"teams",
+				"xero_payroll"
+			]
+		}
+	]
+}
