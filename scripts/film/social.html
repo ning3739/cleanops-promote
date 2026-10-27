@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en-NZ">
+<head>
+<meta charset="utf-8">
+<title>CleanOps — social cut</title>
+<!-- A 30-second vertical cut for Facebook and Instagram, from the same captures as story.html.
+     ?format=tall → 1080×1920 (Reels, Stories); ?format=feed → 1080×1350 (feed posts).
+     Text stays clear of the top and bottom bands the apps cover with their own controls. -->
+<link rel="stylesheet" href="../../node_modules/@fontsource-variable/inter/index.css">
+<script src="icons.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; overflow: hidden; background: #0d1218; font-family: "Inter Variable", Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  #stage { position: relative; width: var(--w); height: var(--h); overflow: hidden; }
+  .scene { position: absolute; inset: 0; opacity: 0; overflow: hidden; }
+  .dark { background: #0d1218; color: #f1f4f7; }
+  .light { background: #f4f7f9; color: #141b24; }
+  .tint { background: #ddf3f9; color: #141b24; }
+  .grid::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(to right, rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 72px 72px; -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 20%, transparent 75%); }
+
+  .cap { position: absolute; left: 72px; right: 72px; top: var(--cap-top); z-index: 30; }
+  .kick { display: inline-flex; align-items: center; gap: 12px; font-size: 30px; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; color: #006d87; opacity: 0; }
+  .dark .kick { color: #3db6cf; }
+  .kick svg { width: 32px; height: 32px; }
+  .line { display: block; font-size: var(--big); line-height: 1.02; font-weight: 700; letter-spacing: -0.035em; margin-top: 12px; opacity: 0; }
+  .line.brand { color: #006d87; }
+  .dark .line.brand { color: #3db6cf; }
+
+  .visual { position: absolute; left: 0; right: 0; top: var(--vis-top); bottom: var(--vis-bottom); }
+  .photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8,12,17,.88) 0%, rgba(8,12,17,.55) 45%, rgba(8,12,17,.75) 100%); }
+
+  /* A desktop capture, shown as a zoomed-in crop so the text is readable on a phone. */
+  .crop { position: absolute; left: 50%; top: 50%; width: 960px; height: var(--crop-h); transform: translate(-50%, -50%); border-radius: 22px; border-top-right-radius: 6px; overflow: hidden; background: #fff; box-shadow: 0 40px 90px -30px rgba(10,20,30,.45), 0 0 0 1px rgba(20,30,40,.08); }
+  .crop .layer { position: absolute; left: 0; top: 0; width: 1440px; height: 900px; transform-origin: 0 0; }
+  .crop .layer img { width: 1440px; height: 900px; display: block; }
+  .ring { position: absolute; border: 5px solid #3db6cf; border-radius: 12px; box-shadow: 0 0 0 9px rgba(61,182,207,.22); opacity: 0; }
+  .ring.bad { border-color: #e5484d; box-shadow: 0 0 0 9px rgba(229,72,77,.2); }
+
+  .iphone { position: absolute; left: 50%; top: 50%; width: var(--phone-w); padding: 5px; border-radius: 80px; background: linear-gradient(135deg,#8d9299 0%,#3b3f45 18%,#24272c 50%,#43474e 82%,#9a9fa6 100%); box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.28), 0 50px 90px -24px rgba(10,20,30,.55); opacity: 0; transform: translate(-50%, -50%); z-index: 20; }
+  .iphone .glass { position: relative; padding: 11px; border-radius: 75px; background: #050607; }
+  .iphone .glass::after { content: ""; position: absolute; top: 23px; left: 50%; width: 30%; height: 38px; transform: translateX(-50%); border-radius: 999px; background: #000; }
+  .iphone .screen { position: relative; border-radius: 63px; overflow: hidden; aspect-ratio: 1206 / 2622; background: #fff; }
+  .iphone .screen img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+  .chip { position: absolute; z-index: 40; display: inline-flex; align-items: center; gap: 14px; padding: 20px 30px; border-radius: 999px; background: #fff; color: #141b24; font-size: 34px; font-weight: 650; box-shadow: 0 22px 50px -14px rgba(10,20,30,.4); opacity: 0; white-space: nowrap; }
+  .chip svg { width: 36px; height: 36px; color: #006d87; }
+  .chip.dark { background: #141b24; color: #fff; }
+  .chip.dark svg { color: #3db6cf; }
+  .stamp { position: absolute; z-index: 50; left: 50%; top: 50%; display: inline-flex; align-items: center; gap: 16px; padding: 24px 40px; border-radius: 18px; background: #2f9e6f; color: #fff; font-size: 48px; font-weight: 750; opacity: 0; box-shadow: 0 30px 70px -16px rgba(20,90,60,.55); }
+  .stamp svg { width: 52px; height: 52px; }
+  .cursor { position: absolute; width: 64px; height: 64px; z-index: 60; opacity: 0; filter: drop-shadow(0 8px 12px rgba(0,0,0,.35)); }
+
+  .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 70px; }
+  .logo { width: 150px; height: 150px; color: #3db6cf; opacity: 0; }
+  .word { font-size: 120px; font-weight: 750; letter-spacing: -0.045em; margin-top: 40px; opacity: 0; }
+  .tag { font-size: 50px; line-height: 1.15; font-weight: 650; letter-spacing: -0.02em; margin-top: 30px; opacity: 0; }
+  .tag b { color: #3db6cf; font-weight: 650; }
+  .cta { margin-top: 56px; padding: 30px 48px; border-radius: 16px; background: #3db6cf; color: #0b121a; font-size: 44px; font-weight: 700; opacity: 0; }
+  .small { margin-top: 28px; font-size: 34px; color: #9aa7b4; opacity: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- 0 hook -->
+  <section class="scene dark" id="s0">
+    <img class="photo" id="s0p" src="a/mop.jpg" alt="">
+    <div class="shade"></div>
+    <div class="center">
+      <div class="kick" id="s0k" data-icon="badge-check">For NZ cleaning companies</div>
+      <span class="line" id="s0a" style="margin-top:28px">Still chasing</span>
+      <span class="line" id="s0b">hours by text?</span>
+    </div>
+  </section>
+
+  <!-- 1 photo proof -->
+  <section class="scene tint" id="s1">
+    <div class="cap"><div class="kick" data-icon="camera">On site</div><span class="line">Photo proof</span><span class="line brand">on every job.</span></div>
+    <div class="visual">
+      <div class="iphone" id="s1phone"><div class="glass"><div class="screen">
+        <img src="a/field-job.png" alt=""><img id="s1b" src="a/field-checklist.png" alt="" style="opacity:0">
+      </div></div></div>
+      <div class="chip" id="s1c1" style="left:60px;top:22%"><span data-icon="camera"></span>Photo required</div>
+      <div class="chip" id="s1c2" style="right:60px;top:62%"><span data-icon="wifi-off"></span>Works offline</div>
+    </div>
+  </section>
+
+  <!-- 2 hours -->
+  <section class="scene light" id="s2">
+    <div class="cap"><div class="kick" data-icon="clock">Hours</div><span class="line">Hours come</span><span class="line brand">from the work.</span></div>
+    <div class="visual">
+      <div class="iphone" id="s2phone"><div class="glass"><div class="screen"><img src="a/field-hours.png" alt=""></div></div></div>
+      <div class="chip" id="s2c1" style="left:56px;top:16%"><span data-icon="car"></span>Travel 25m</div>
+      <div class="chip" id="s2c2" style="right:56px;top:42%"><span data-icon="clock"></span>13:00–15:00</div>
+      <div class="chip dark" id="s2c3" style="left:56px;top:70%"><span data-icon="refresh-cw"></span>To Xero Payroll</div>
+    </div>
+  </section>
+
+  <!-- 3 review -->
+  <section class="scene light" id="s3">
+    <div class="cap"><div class="kick" data-icon="badge-check">Review</div><span class="line">Check it once.</span><span class="line brand">Approve.</span></div>
+    <div class="visual">
+      <div class="crop" id="s3crop"><div class="layer" id="s3layer"><img src="a/office-review-fixed.png" alt="">
+        <div class="ring" id="s3ring" style="left:855px;top:490px;width:575px;height:330px"></div>
+      </div></div>
+      <svg class="cursor" id="s3cur" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15 L12.5 22 L15.5 20.5 L12 14 L19 14 Z" fill="#141b24" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <div class="stamp" id="s3stamp"><span data-icon="circle-check"></span>Approved</div>
+    </div>
+  </section>
+
+  <!-- 4 invoice -->
+  <section class="scene light" id="s4">
+    <div class="cap"><div class="kick" data-icon="receipt-text">Same day</div><span class="line">Invoiced,</span><span class="line brand">GST done.</span></div>
+    <div class="visual">
+      <div class="crop" id="s4crop"><div class="layer" id="s4layer"><img src="a/office-invoice.png" alt="">
+        <div class="ring" id="s4ring" style="left:282px;top:522px;width:756px;height:28px"></div>
+      </div></div>
+      <div class="chip dark" id="s4c1" style="left:56px;bottom:6%"><span data-icon="refresh-cw"></span>Synced with Xero</div>
+      <div class="chip" id="s4c2" style="right:56px;top:4%"><span data-icon="circle-check"></span>Paid</div>
+    </div>
+  </section>
+
+  <!-- 5 end -->
+  <section class="scene dark grid" id="s5">
+    <div class="center">
+      <svg class="logo" id="s5logo" viewBox="0 0 26 26"><path fill="currentColor" fill-rule="evenodd" d="M13 0h11.4Q26 0 26 1.6V13A13 13 0 1 1 13 0Zm0 5.4a7.6 7.6 0 1 0 0 15.2 7.6 7.6 0 1 0 0-15.2Z"/></svg>
+      <div class="word" id="s5a">CleanOps</div>
+      <div class="tag" id="s5b">Prove the clean. Pay the crew.<br><b>Bill the same day.</b></div>
+      <div class="cta" id="s5c">Try free for 14 days</div>
+      <div class="small" id="s5d">cleanops.nz · Made in New Zealand</div>
+    </div>
+  </section>
+</div>
+
+<script>
+  const format = new URLSearchParams(location.search).get("format") === "feed" ? "feed" : "tall";
+  // Safe areas: Reels and Stories cover roughly the top 250 px and bottom 380 px with their own UI; feed posts much less.
+  const L = format === "tall"
+    ? { w: 1080, h: 1920, capTop: 250, visTop: 640, visBottom: 380, big: "92px", cropH: "760px", phoneW: "440px" }
+    : { w: 1080, h: 1350, capTop: 80, visTop: 410, visBottom: 50, big: "82px", cropH: "760px", phoneW: "390px" };
+  const root = document.documentElement.style;
+  root.setProperty("--w", L.w + "px"); root.setProperty("--h", L.h + "px");
+  root.setProperty("--cap-top", L.capTop + "px"); root.setProperty("--vis-top", L.visTop + "px");
+  root.setProperty("--vis-bottom", L.visBottom + "px"); root.setProperty("--big", L.big);
+  root.setProperty("--crop-h", L.cropH); root.setProperty("--phone-w", L.phoneW);
+
+  for (const el of document.querySelectorAll("[data-icon]")) {
+    const svg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[el.dataset.icon]}</svg>`;
+    if (el.tagName === "SPAN" && !el.textContent.trim()) el.outerHTML = svg; else el.insertAdjacentHTML("afterbegin", svg);
+  }
+
+  const $ = (id) => document.getElementById(id);
+  const ease = { out: "cubic-bezier(.16,1,.3,1)", inOut: "cubic-bezier(.65,0,.35,1)", pop: "cubic-bezier(.34,1.56,.64,1)", lin: "linear" };
+  const at = (el, t, d, kf, e = ease.out) => (typeof el === "string" ? $(el) : el).animate(kf, { delay: t * 1000, duration: d * 1000, fill: "forwards", easing: e });
+  const scene = (id, t0, t1) => { at(id, t0, 0.35, [{ opacity: 0 }, { opacity: 1 }], ease.lin); at(id, t1 - 0.35, 0.35, [{ opacity: 1 }, { opacity: 0 }], ease.lin); };
+  const caption = (sceneId, t0, t1) => {
+    [...$(sceneId).querySelector(".cap").children].forEach((k, i) => {
+      at(k, t0 + 0.1 * i, 0.6, [{ opacity: 0, transform: "translateY(40px)" }, { opacity: 1, transform: "none" }]);
+    });
+  };
+  const pop = (id, t, from = "translateY(24px) scale(.85)") => at(id, t, 0.5, [{ opacity: 0, transform: from }, { opacity: 1, transform: "none" }], ease.pop);
+  const phoneIn = (id, t) => at(id, t, 0.8, [{ opacity: 0, transform: "translate(-50%, -30%)" }, { opacity: 1, transform: "translate(-50%, -50%)" }]);
+  // Zoom a 1440×900 capture inside its 960-wide crop so point (x, y) sits in the crop's centre at scale s.
+  const cropH = parseInt(L.cropH);
+  const cam = (layer, t, d, a, b) => {
+    const tf = ({ s, x, y }) => `translate(${480 - x * s}px, ${cropH / 2 - y * s}px) scale(${s})`;
+    at(layer, t, d, [{ transform: tf(a) }, { transform: tf(b) }], ease.inOut);
+  };
+
+  // 0 hook 0–3.4
+  scene("s0", 0, 3.4);
+  at("s0p", 0, 3.4, [{ transform: "scale(1.05)" }, { transform: "scale(1.15)" }], ease.lin);
+  at("s0k", 0.1, 0.5, [{ opacity: 0 }, { opacity: 1 }]);
+  at("s0a", 0.3, 0.6, [{ opacity: 0, transform: "translateY(50px)" }, { opacity: 1, transform: "none" }]);
+  at("s0b", 0.65, 0.6, [{ opacity: 0, transform: "translateY(50px)" }, { opacity: 1, transform: "none" }]);
+
+  // 1 photo proof 3.1–9.2
+  scene("s1", 3.1, 9.2);
+  caption("s1", 3.3, 9.2);
+  phoneIn("s1phone", 3.5);
+  at("s1b", 5.8, 0.4, [{ opacity: 0 }, { opacity: 1 }], ease.lin);
+  pop("s1c1", 6.2); pop("s1c2", 7.0);
+
+  // 2 hours 8.9–14.2
+  scene("s2", 8.9, 14.2);
+  caption("s2", 9.1, 14.2);
+  phoneIn("s2phone", 9.3);
+  pop("s2c1", 10.5, "translateX(-40px) scale(.85)"); pop("s2c2", 11.2, "translateX(40px) scale(.85)"); pop("s2c3", 11.9, "translateX(-40px) scale(.85)");
+
+  // 3 review 13.9–20.4
+  scene("s3", 13.9, 20.4);
+  caption("s3", 14.1, 20.4);
+  cam("s3layer", 13.9, 0.01, { s: 1.5, x: 1140, y: 380 }, { s: 1.5, x: 1140, y: 380 });
+  cam("s3layer", 14.6, 1.6, { s: 1.5, x: 1140, y: 380 }, { s: 1.5, x: 1140, y: 640 });
+  at("s3ring", 16.2, 0.4, [{ opacity: 0, transform: "scale(1.1)" }, { opacity: 1, transform: "none" }]);
+  // the Approve button (capture 1220, 853) inside the crop at s=1.5 centred on (1140, 640)
+  const vis = $("s3crop").parentElement.getBoundingClientRect();
+  // The cursor is positioned inside .visual, so its coordinates are relative to that box, not the stage.
+  const cx = L.w / 2 + (1220 - 1140) * 1.5, cy = vis.height / 2 + (853 - 640) * 1.5;
+  at("s3cur", 16.6, 1.1, [{ opacity: 0, left: `${L.w - 120}px`, top: `${cy + 260}px` }, { opacity: 1, left: `${cx - 8}px`, top: `${cy - 6}px` }], ease.inOut);
+  at("s3cur", 17.8, 0.22, [{ transform: "scale(1)" }, { transform: "scale(.8)" }, { transform: "scale(1)" }], ease.lin);
+  at("s3stamp", 18.0, 0.5, [{ opacity: 0, transform: "translate(-50%, -50%) scale(1.6) rotate(-8deg)" }, { opacity: 1, transform: "translate(-50%, -50%)" }], ease.pop);
+
+  // 4 invoice 20.1–25.6
+  scene("s4", 20.1, 25.6);
+  caption("s4", 20.3, 25.6);
+  cam("s4layer", 20.1, 0.01, { s: 1.25, x: 520, y: 330 }, { s: 1.25, x: 520, y: 330 });
+  cam("s4layer", 20.7, 1.6, { s: 1.25, x: 520, y: 330 }, { s: 1.2, x: 660, y: 500 });
+  at("s4ring", 22.3, 0.4, [{ opacity: 0, transform: "scale(1.1)" }, { opacity: 1, transform: "none" }]);
+  pop("s4c1", 22.6, "translateX(-40px) scale(.85)"); pop("s4c2", 23.3);
+
+  // 5 end 25.3–30
+  scene("s5", 25.3, 30.4);
+  at("s5logo", 25.5, 0.5, [{ opacity: 0, transform: "scale(.4) rotate(-40deg)" }, { opacity: 1, transform: "none" }], ease.pop);
+  at("s5a", 25.8, 0.6, [{ opacity: 0, transform: "translateY(40px)" }, { opacity: 1, transform: "none" }]);
+  at("s5b", 26.2, 0.6, [{ opacity: 0, transform: "translateY(30px)" }, { opacity: 1, transform: "none" }]);
+  at("s5c", 26.8, 0.5, [{ opacity: 0, transform: "scale(.85)" }, { opacity: 1, transform: "none" }], ease.pop);
+  at("s5d", 27.2, 0.6, [{ opacity: 0 }, { opacity: 1 }], ease.lin);
+
+  window.START = 0;
+  window.DURATION = 30;
+  window.SIZE = { width: L.w, height: L.h };
+  window.ready = Promise.all([...document.images].map((i) => i.decode().catch(() => {}))).then(() => document.fonts.ready);
+  window.seek = (t) => { for (const a of document.getAnimations()) { a.pause(); a.currentTime = t * 1000; } };
+</script>
+</body>
+</html>

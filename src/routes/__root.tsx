@@ -1,4 +1,5 @@
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { MotionRoot } from "#/components/motion-root";
 import { SiteFooter } from "#/components/site-footer";
 import { SiteHeader } from "#/components/site-header";
 import { THEME_SCRIPT } from "#/components/theme-toggle";
@@ -67,6 +68,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<SiteHeader />
 				<main id="main">{children}</main>
 				<SiteFooter />
+				<MotionRoot />
 				<Scripts />
 			</body>
 		</html>

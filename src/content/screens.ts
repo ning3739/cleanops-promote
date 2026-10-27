@@ -82,8 +82,25 @@ export const screens = {
 
 // The product film: real screens animated, with music ("Upbeat Happy Corporate" by kornevmusic, Pixabay Content
 // License, free for commercial use; pixabay.com/music/corporate-upbeat-happy-corporate-487426). README, "The film".
+// Rendered by scripts/film/render.mjs in four versions; the player lists them in this order and the browser takes the
+// first it can play: 720p on narrow screens, AV1 WebM where supported (about two-thirds the size), H.264 MP4 otherwise.
+const PHONE = "(max-width: 767px)";
 export const recording = {
 	src: "/media/how-it-works.mp4",
 	poster: "/media/how-it-works-poster.webp",
-	seconds: 50,
+	seconds: 47,
+	sources: [
+		{
+			src: "/media/how-it-works-720.webm",
+			type: 'video/webm; codecs="av01.0.05M.08, opus"',
+			media: PHONE,
+		},
+		{ src: "/media/how-it-works-720.mp4", type: "video/mp4", media: PHONE },
+		{
+			src: "/media/how-it-works.webm",
+			type: 'video/webm; codecs="av01.0.08M.08, opus"',
+			media: undefined,
+		},
+		{ src: "/media/how-it-works.mp4", type: "video/mp4", media: undefined },
+	],
 };

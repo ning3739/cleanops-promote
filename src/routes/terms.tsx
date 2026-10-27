@@ -14,7 +14,7 @@ export const Route = createFileRoute("/terms")({
 		pageHead(
 			"/terms",
 			"Terms of service — CleanOps",
-			"The agreement between a company that uses CleanOps and ByteTech, the company that provides it.",
+			`The agreement between a company that uses CleanOps and ${site.company.legalName}, the company that provides it.`,
 		),
 	component: Terms,
 });

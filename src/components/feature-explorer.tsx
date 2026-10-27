@@ -113,7 +113,10 @@ export function FeatureExplorer({
 				aria-labelledby={`${items[selected].id}-trigger`}
 				aria-live="polite"
 			>
-				<div className="feature-preview-inner">{items[selected].visual}</div>
+				{/* Keyed by item so a newly selected screen mounts fresh and its demo plays. */}
+				<div key={items[selected].id} className="feature-preview-inner">
+					{items[selected].visual}
+				</div>
 				<p>{items[selected].step} in CleanOps · Demo company</p>
 			</section>
 		</div>

@@ -28,7 +28,15 @@ export function DemoVideo() {
 				aria-label="CleanOps product walkthrough"
 				className="block aspect-video w-full bg-surface object-cover"
 			>
-				<source src={recording.src} type="video/mp4" />
+				{/* Phones get 720p; browsers that play AV1 get the smaller WebM. The first match wins. */}
+				{recording.sources.map((source) => (
+					<source
+						key={source.src}
+						src={source.src}
+						type={source.type}
+						media={source.media}
+					/>
+				))}
 				<track
 					kind="captions"
 					src="/media/how-it-works.en.vtt"

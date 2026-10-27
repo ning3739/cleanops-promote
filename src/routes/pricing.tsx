@@ -63,10 +63,7 @@ function Pricing() {
 			</section>
 			<section className="plans-section marketing-container">
 				<div className="billing-row">
-					<fieldset
-						aria-label="Billing period"
-						className="billing-switch"
-					>
+					<fieldset aria-label="Billing period" className="billing-switch">
 						<button
 							type="button"
 							aria-pressed={billing === "monthly"}

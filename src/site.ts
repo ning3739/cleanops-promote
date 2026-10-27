@@ -5,9 +5,9 @@ export const site = {
 	name: "CleanOps",
 	origin: "https://cleanops.nz",
 	company: {
-		// Trading name as given; the registered legal name (e.g. "ByteTech Limited") belongs here once confirmed.
+		// Trading name for everyday copy; the registered name for the legal pages and structured data.
 		name: "ByteTech",
-		legalName: "ByteTech",
+		legalName: "ByteTech Limited",
 		// PLACEHOLDER: a real NZBN has 13 digits; this is the value supplied so far.
 		nzbn: "123456789",
 		city: "Queenstown",

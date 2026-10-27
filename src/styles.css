@@ -529,3 +529,50 @@ img.xero-logo { display: block; width: 32px; height: 32px; flex-shrink: 0; objec
  .feature-inline-preview img[src$="crop-review.webp"] { max-height: 350px; width: auto; margin-inline: auto; }
  .feature-inline-preview .iphone-host { max-width: 140px; }
 }
+
+/* Motion. Quiet and purposeful: it shows how the product works or answers an action, and nothing loops. Only opacity
+   and transform move. Everything is off with reduced motion (the global rule above, plus the guards below). */
+
+/* Sections fade up as they come into view (components/motion-root.tsx adds .reveal / .is-in only when JS runs). */
+.motion-ready .reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s cubic-bezier(.16,1,.3,1), transform .5s cubic-bezier(.16,1,.3,1); }
+.motion-ready .reveal.is-in { opacity: 1; transform: none; }
+
+/* Links and controls answer the pointer. */
+.text-link { transition: color .15s ease; }
+.text-link svg { transition: transform .2s cubic-bezier(.16,1,.3,1); }
+.text-link:hover svg { transform: translateX(3px); }
+.feature-entry h3 button { transition: color .15s ease; }
+.demo-play-button > span { transition: border-color .15s ease, color .15s ease; }
+
+/* FAQ answers open smoothly where the browser can animate to auto height; elsewhere they simply open. */
+@supports (interpolate-size: allow-keywords) {
+	:root { interpolate-size: allow-keywords; }
+	details::details-content { height: 0; overflow: clip; transition: height .25s ease, content-visibility .25s allow-discrete; }
+	details[open]::details-content { height: auto; }
+}
+
+/* The hero photo drifts a few percent sideways over half a minute: light, not movement. */
+@keyframes hero-pan { from { object-position: 38% center; } to { object-position: 50% center; } }
+.home-hero-photo { animation: hero-pan 30s ease-in-out infinite alternate; }
+
+/* Screenshot demos (components/shot-demo.tsx): drawn over a real screen, played once. */
+.shot-demo { position: absolute; inset: 0; pointer-events: none; }
+/* The review crop is height-capped, so its frame shrinks to the image and the overlay stays on it. */
+.desktop-shot.review-preview:has(.shot-demo) { width: fit-content; margin-inline: auto; }
+.shot-demo > * { position: absolute; opacity: 0; }
+.shot-demo[data-state="in"] > * { animation: demo-in .45s cubic-bezier(.34,1.56,.64,1) both; }
+.demo-ring { border: 2px solid var(--brand); border-radius: 6px; box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand) 22%, transparent); }
+.demo-ring-bad { border-color: var(--bad); box-shadow: 0 0 0 4px color-mix(in oklab, var(--bad) 20%, transparent); }
+.demo-ring-ok { border-color: var(--ok); box-shadow: 0 0 0 4px color-mix(in oklab, var(--ok) 20%, transparent); }
+.demo-tick { border-radius: 999px; background: color-mix(in oklab, var(--ok) 28%, transparent); box-shadow: 0 0 0 2px var(--ok); }
+.demo-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line-strong); box-shadow: var(--shadow-overlay); color: var(--ink); font-size: 12px; font-weight: 600; white-space: nowrap; transform-origin: left center; }
+.demo-pill svg { width: 14px; height: 14px; color: var(--ok); }
+.demo-pill-ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.demo-pill-ok svg { color: #fff; }
+@keyframes demo-in { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+	.home-hero-photo { animation: none; }
+	.shot-demo { display: none; }
+	details::details-content { transition: none; }
+}

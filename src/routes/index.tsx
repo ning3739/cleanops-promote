@@ -3,7 +3,8 @@ import { ArrowRight, Play } from "lucide-react";
 import { ButtonLink } from "#/components/button";
 import { DemoVideo } from "#/components/demo-video";
 import { FeatureExplorer } from "#/components/feature-explorer";
-import { DesktopShot, PhoneShot } from "#/components/screens";
+import { PhoneShot } from "#/components/screens";
+import { ShotDemo } from "#/components/shot-demo";
 import { TrialCallout } from "#/components/trial-callout";
 import { XeroLogo } from "#/components/xero-logo";
 import { photos } from "#/content/photos";
@@ -34,7 +35,7 @@ const workflow = [
 		step: "Scheduling",
 		title: "",
 		lead: "Assign one-off and recurring jobs. See the week by cleaner, including confirmations and NZ public holidays.",
-		visual: <DesktopShot {...screens.officeSchedule} />,
+		visual: <ShotDemo shot={screens.officeSchedule} demo="schedule" />,
 	},
 	{
 		id: "home-review",
@@ -43,7 +44,13 @@ const workflow = [
 		step: "Checklists & job review",
 		title: "",
 		lead: "Review a completed job’s checklist, required photos and recorded hours before approving it.",
-		visual: <DesktopShot {...screens.cropReview} className="review-preview" />,
+		visual: (
+			<ShotDemo
+				shot={screens.cropReview}
+				demo="review"
+				className="review-preview"
+			/>
+		),
 	},
 	{
 		id: "home-invoices",
@@ -52,7 +59,7 @@ const workflow = [
 		step: "Invoicing & Xero",
 		title: "",
 		lead: "Approval creates a draft GST invoice. Review it, send it and sync with Xero.",
-		visual: <DesktopShot {...screens.cropInvoice} />,
+		visual: <ShotDemo shot={screens.cropInvoice} demo="invoice" />,
 	},
 ];
 

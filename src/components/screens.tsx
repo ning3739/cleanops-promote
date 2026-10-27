@@ -19,10 +19,11 @@ export function DesktopShot({
 	height,
 	className = "",
 	priority = false,
-}: ShotProps) {
+	children,
+}: ShotProps & { children?: React.ReactNode }) {
 	return (
 		<figure
-			className={`desktop-shot min-w-0 overflow-hidden rounded-md border border-line bg-surface ${className}`}
+			className={`desktop-shot relative min-w-0 overflow-hidden rounded-md border border-line bg-surface ${className}`}
 		>
 			<img
 				src={src}
@@ -34,6 +35,7 @@ export function DesktopShot({
 				decoding="async"
 				className="block h-auto w-full max-w-full max-sm:w-[160%] max-sm:max-w-none"
 			/>
+			{children}
 		</figure>
 	);
 }

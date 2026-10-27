@@ -67,6 +67,10 @@
   .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
   .cta { margin-top: 48px; display: inline-flex; align-items: center; gap: 14px; padding: 24px 40px; border-radius: 12px; background: #3db6cf; color: #0b121a; font-size: 34px; font-weight: 650; opacity: 0; }
   .url { margin-top: 26px; font-size: 28px; color: #9aa7b4; opacity: 0; }
+  /* Where the viewer is in the story: most people watch muted and some join halfway. */
+  .steps { position: absolute; left: 50%; bottom: 36px; transform: translateX(-50%); z-index: 100; display: flex; gap: 6px; padding: 6px; border-radius: 999px; background: rgba(13,18,24,.78); opacity: 0; }
+  .steps span { padding: 9px 18px; border-radius: 999px; font-size: 20px; font-weight: 600; color: #e7edf2; opacity: .5; }
+  .tagline { margin-top: 30px; font-size: 40px; font-weight: 650; letter-spacing: -0.02em; color: #ffffff; opacity: 0; }
   .progress { position: absolute; left: 0; bottom: 0; height: 6px; width: 1920px; background: #3db6cf; transform-origin: 0 0; transform: scaleX(0); z-index: 100; }
 </style>
 </head>
@@ -160,7 +164,7 @@
     <div class="winpos"><div class="win" id="s5win">
       <div class="bar"><i></i><i></i><i></i></div>
       <div class="vp"><div class="layer" id="s5layer">
-        <img src="a/office-review.png" alt="">
+        <img src="a/office-review-fixed.png" alt="">
         <div class="ring" id="s5ring" style="left:855px;top:90px;width:575px;height:140px"></div>
         <div class="ring" id="s5ring2" style="left:855px;top:490px;width:575px;height:330px"></div>
       </div></div>
@@ -203,10 +207,10 @@
       <span class="line brand">the proof.</span>
     </div>
     <div class="iphone" id="s7p1" style="left:930px;top:120px">
-      <div class="glass"><div class="screen"><img src="a/portal-safari-past.png" alt=""></div></div>
+      <div class="glass"><div class="screen"><img src="a/portal-safari-past-fixed.png" alt=""></div></div>
     </div>
     <div class="iphone" id="s7p2" style="left:1380px;top:200px">
-      <div class="glass"><div class="screen"><img src="a/portal-safari-invoices.png" alt=""></div></div>
+      <div class="glass"><div class="screen"><img src="a/portal-safari-invoices-fixed.png" alt=""></div></div>
     </div>
   </section>
 
@@ -216,12 +220,13 @@
       <svg class="logo" id="s8logo" viewBox="0 0 26 26"><path fill="currentColor" fill-rule="evenodd" d="M13 0h11.4Q26 0 26 1.6V13A13 13 0 1 1 13 0Zm0 5.4a7.6 7.6 0 1 0 0 15.2 7.6 7.6 0 1 0 0-15.2Z"/></svg>
       <div class="big" id="s8a" style="margin-top:44px">CleanOps</div>
       <div class="url" id="s8b" style="font-size:36px;color:#cfd7df">Job management for New Zealand cleaning companies</div>
+      <div class="tagline" id="s8t">Prove the clean. Pay the crew. Bill the same day.</div>
       <div class="cta" id="s8c">Start a 14-day trial</div>
       <div class="url" id="s8d">cleanops.nz</div>
     </div>
   </section>
 
-  <div class="progress" id="progress"></div>
+  <div class="steps" id="steps"><span>Schedule</span><span>On site</span><span>Review</span><span>Invoice</span><span>Customer</span></div>
 </div>
 
 <script>
@@ -258,7 +263,7 @@
   const win = (id, t) => at(id, t, 0.9, [{ transform: "translateY(120px) scale(.96)", opacity: 0 }, { transform: "none", opacity: 1 }]);
 
   // S0 intro 0–3.8
-  scene("s0", 0, 3.8);
+  // S0 (the tagline card) is kept in the markup but no longer shown: the film starts at START, on the office.
   pop("s0logo", 0.15, "scale(.4) rotate(-40deg)");
   at("s0a", 0.55, 0.7, [{ opacity: 0, transform: "translateY(60px)" }, { opacity: 1, transform: "none" }]);
   at("s0b", 1.05, 0.7, [{ opacity: 0, transform: "translateY(60px)" }, { opacity: 1, transform: "none" }]);
@@ -266,7 +271,7 @@
   at("s0", 3.0, 0.8, [{ transform: "none" }, { transform: "scale(1.06)" }], ease.inOut);
 
   // S1 office today 3.4–10.2
-  scene("s1", 3.4, 10.2);
+  scene("s1", 3.0, 10.2);
   win("s1win", 3.5);
   caption("s1cap", 3.9, 10.2);
   cam("s1layer", 5.4, 1.4, HOME, { s: 1.7, x: 640, y: 360 });
@@ -342,8 +347,17 @@
   pop("s8c", 47.0);
   at("s8d", 47.4, 0.7, [{ opacity: 0 }, { opacity: 1 }], ease.lin);
 
-  at("progress", 0, 50, [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], ease.lin);
+  at("s8t", 46.8, 0.7, [{ opacity: 0, transform: "translateY(24px)" }, { opacity: 1, transform: "none" }]);
+  at("steps", 3.6, 0.5, [{ opacity: 0 }, { opacity: 1 }], ease.lin);
+  at("steps", 45.2, 0.4, [{ opacity: 1 }, { opacity: 0 }], ease.lin);
+  const stepSpans = [...document.querySelectorAll("#steps span")];
+  [[3.6, 15.6], [15.6, 29.0], [29.0, 35.4], [35.4, 41.2], [41.2, 46.0]].forEach(([t0, t1], i) => {
+    const on = [{ opacity: 0.5, background: "transparent", color: "#e7edf2" }, { opacity: 1, background: "#3db6cf", color: "#0b121a" }];
+    at(stepSpans[i], t0, 0.3, on, ease.out);
+    at(stepSpans[i], t1, 0.3, [...on].reverse(), ease.out);
+  });
 
+  window.START = 3.4;
   window.DURATION = 50;
   window.ready = Promise.all([...document.images].map((i) => i.decode().catch(() => {}))).then(() => document.fonts.ready);
   window.seek = (t) => { for (const a of document.getAnimations()) { a.pause(); a.currentTime = t * 1000; } };
