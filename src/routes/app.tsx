@@ -155,10 +155,10 @@ function FieldAppPage() {
 					</div>
 					<figure className="app-work-photo">
 						<img
-							src={photos.livingRoomMop.src}
-							alt={photos.livingRoomMop.alt}
-							width={photos.livingRoomMop.width}
-							height={photos.livingRoomMop.height}
+							src={photos.basementChecklist.src}
+							alt={photos.basementChecklist.alt}
+							width={photos.basementChecklist.width}
+							height={photos.basementChecklist.height}
 							loading="lazy"
 							decoding="async"
 						/>

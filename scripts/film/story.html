@@ -126,7 +126,8 @@
 
   <!-- S3 on site -->
   <section class="scene dark" id="s3">
-    <img class="photo" id="s3photo" src="a/vacuum.jpg" alt="">
+    <img class="photo" id="s3photo" src="a/van.jpg" alt="">
+    <img class="photo" id="s3photoB" src="a/gloves.jpg" alt="" style="opacity:0">
     <div class="shade"></div>
     <div class="cap" id="s3cap" style="top:300px">
       <div class="kick" data-icon="camera">On site</div>
@@ -291,7 +292,10 @@
 
   // S3 on site 15.4–24.2
   scene("s3", 15.4, 24.2);
-  at("s3photo", 15.4, 8.8, [{ transform: "scale(1.04)" }, { transform: "scale(1.16) translateX(-30px)" }], ease.lin);
+  // The van arrives; the work itself takes over as the checklist comes up on the phone.
+  at("s3photo", 15.4, 4.4, [{ transform: "scale(1.04)" }, { transform: "scale(1.12) translateX(-24px)" }], ease.lin);
+  at("s3photoB", 19.0, 0.6, [{ opacity: 0 }, { opacity: 1 }], ease.lin);
+  at("s3photoB", 19.0, 5.2, [{ transform: "scale(1.04)" }, { transform: "scale(1.12) translateX(-24px)" }], ease.lin);
   caption("s3cap", 15.9, 24.2);
   at("s3phone", 16.4, 1.0, [{ opacity: 0, transform: "translateY(260px) rotate(6deg)" }, { opacity: 1, transform: "rotate(-3deg)" }]);
   at("s3scrB", 19.2, 0.5, [{ opacity: 0 }, { opacity: 1 }], ease.lin);

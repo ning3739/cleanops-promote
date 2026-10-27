@@ -1,13 +1,28 @@
-// Photographs of cleaning work, from Unsplash under the Unsplash License (free for commercial use, no attribution
-// required; credited here anyway). They set the scene; they are not CleanOps customers, so the site never names or
+// Photographs of cleaning work. Most are from Unsplash under the Unsplash License (free for commercial use, no
+// attribution required; credited here anyway). The hero, closing-call and Field app photos are AI-generated scenes of a New
+// Zealand crew: they are not CleanOps staff or customers, so the site never names, quotes or captions them as such. They set the scene; they are not CleanOps customers, so the site never names or
 // quotes the people in them.
 export const photos = {
-	officeVacuum: {
-		src: "/photos/office-vacuum.webp",
-		width: 1600,
-		height: 1280,
-		alt: "A cleaner in overalls and yellow gloves vacuuming an office floor.",
-		credit: "web seo, unsplash.com/photos/CVcIMnH_7so",
+	crewArrival: {
+		src: "/photos/crew-arrival.webp",
+		width: 1402,
+		height: 1122,
+		alt: "Two cleaners in navy polos arriving at a weatherboard house: one lifts a vacuum from the van, the other carries a cleaning caddy.",
+		credit: "AI-generated (ChatGPT) for CleanOps",
+	},
+	basementChecklist: {
+		src: "/photos/basement-checklist.webp",
+		width: 1122,
+		height: 1402,
+		alt: "A cleaner in a navy polo checking his phone beside a cleaning trolley in an underground car park.",
+		credit: "AI-generated (ChatGPT) for CleanOps",
+	},
+	ownerSchedule: {
+		src: "/photos/owner-schedule.webp",
+		width: 1536,
+		height: 1024,
+		alt: "A cleaning company owner checking her phone beside the open door of her van.",
+		credit: "AI-generated (ChatGPT) for CleanOps",
 	},
 	upholstery: {
 		src: "/photos/upholstery.webp",
@@ -15,13 +30,6 @@ export const photos = {
 		height: 733,
 		alt: "A cleaner in a green shirt and black gloves vacuuming an upholstered ottoman.",
 		credit: "Giorgio Trovato, unsplash.com/photos/5TXz228u4eo",
-	},
-	livingRoomMop: {
-		src: "/photos/living-room-mop.webp",
-		width: 1600,
-		height: 900,
-		alt: "A cleaner in yellow gloves mopping the floor of a bright living room.",
-		credit: "Vitaly Gariev, unsplash.com/photos/2NcTLdFHpH8",
 	},
 	hallwayMop: {
 		src: "/photos/hallway-mop.webp",

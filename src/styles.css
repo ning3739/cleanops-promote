@@ -219,12 +219,15 @@ main { background: var(--surface); }
 .hero-integration { display: flex; align-items: center; gap: 12px; margin-top: 38px; font-size: 13px; }
 .hero-integration > span > span { display: block; margin-top: 2px; color: var(--ink-muted); font-size: 12px; }
 .home-hero-media { position: relative; padding: 0 30px 24px 0; }
-.home-hero-photo { display: block; width: 100%; height: 500px; object-fit: cover; object-position: 42% center; border-radius: var(--radius-md); }
+.home-hero-photo { display: block; width: 100%; height: 500px; object-fit: cover; object-position: 10% center; border-radius: var(--radius-md); }
 .home-hero-phone { position: absolute; right: 0; bottom: 0; width: 34%; max-width: 190px; }
 .section-intro { display: flex; align-items: end; justify-content: space-between; gap: 36px; margin-bottom: 40px; }
 .workflow-section, .customer-strip, .local-section, .questions-section { background: var(--bg); }
 .feature-explorer { display: grid; grid-template-columns: minmax(260px, .75fr) minmax(0, 1.25fr); align-items: start; gap: 64px; }
-.feature-entry { border-top: 1px solid var(--line-strong); scroll-margin-top: 116px; }
+.feature-entry { position: relative; border-top: 1px solid var(--line-strong); scroll-margin-top: 116px; }
+/* The selected entry's top rule, in brand colour; Motion slides it from one entry to the next. */
+.feature-indicator { position: absolute; top: -1px; left: 0; right: 0; height: 2px; background: var(--brand); }
+.feature-fold { overflow: hidden; }
 .feature-entry:last-child { border-bottom: 1px solid var(--line-strong); }
 .feature-entry h3 button { display: flex; width: 100%; min-height: 62px; align-items: center; justify-content: space-between; gap: 20px; padding: 16px 0; color: var(--ink); font-size: 17px; font-weight: 500; text-align: left; cursor: pointer; }
 .feature-entry h3 button:hover, .feature-entry h3 button.is-selected { color: var(--brand); }
@@ -267,12 +270,21 @@ main { background: var(--surface); }
 .home-pricing h2 { font-size: 34px; }
 .home-pricing h2 span { display: inline-block; margin-left: 6px; color: var(--ink-muted); font-size: 14px; font-weight: 400; letter-spacing: normal; }
 .home-pricing h2 + p { margin-top: 12px; color: var(--ink-muted); font-size: 14px; }
-.trial-callout { padding-block: 42px; border-top: 1px solid var(--line); background: var(--brand-surface); }
-.trial-callout-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
-.trial-callout h2 { font-size: 25px; }
-.trial-callout p { margin-top: 9px; color: var(--ink-muted); font-size: 14px; }
-.trial-callout-inner > div:last-child { display: flex; align-items: center; gap: 24px; font-size: 14px; }
+.trial-callout { position: relative; isolation: isolate; overflow: hidden; padding-block: 128px; border-top: 1px solid var(--line); background: var(--brand-surface); }
+.trial-callout-photo { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+/* The brand colour holds under the copy and fades out before the owner on the right. */
+.trial-callout::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, var(--brand-surface) 0%, var(--brand-surface) 32%, color-mix(in oklab, var(--brand-surface) 72%, transparent) 46%, transparent 64%); }
+.trial-callout-inner > div { max-width: 460px; }
+.trial-callout h2 { font-size: 30px; }
+.trial-callout p { margin-top: 10px; color: var(--ink-muted); font-size: 15px; }
+.trial-callout-inner > div:last-child { display: flex; align-items: center; gap: 24px; margin-top: 28px; font-size: 14px; }
 .trial-callout-inner > div:last-child > a:last-child { min-height: 44px; display: inline-flex; align-items: center; }
+/* Below desktop width the copy would run into the owner, so the photo moves above it. */
+@media (max-width: 1023px) {
+	.trial-callout { padding-block: 0 40px; }
+	.trial-callout::before { content: none; }
+	.trial-callout-photo { position: static; display: block; height: 260px; margin-bottom: 32px; object-position: 62% 30%; }
+}
 .page-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 90px; align-items: center; padding-block: 64px; }
 .page-intro h1 { font-size: 44px; }
 .page-intro .section-label { margin-bottom: 18px; }
@@ -296,8 +308,11 @@ main { background: var(--surface); }
 .billing-row { display: flex; align-items: center; gap: 22px; padding-bottom: 36px; }
 .billing-row > p { color: var(--ink-muted); font-size: 13px; }
 .billing-switch { display: inline-flex; gap: 3px; padding: 4px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg); }
-.billing-switch button { min-height: 38px; min-width: 94px; border-radius: 3px; padding: 6px 15px; color: var(--ink-muted); font-size: 14px; cursor: pointer; }
-.billing-switch button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-control); }
+.billing-switch button { position: relative; min-height: 38px; min-width: 94px; border-radius: 3px; padding: 6px 15px; color: var(--ink-muted); font-size: 14px; cursor: pointer; transition: color .15s ease; }
+.billing-switch button[aria-pressed="true"] { color: var(--ink); }
+.billing-switch button > span:last-child { position: relative; }
+/* The raised background behind the chosen period; Motion slides it across. */
+.billing-pill { position: absolute; inset: 0; border-radius: 3px; background: var(--surface); box-shadow: var(--shadow-control); }
 .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line-strong); }
 .plan-column { padding: 32px 32px 24px; min-width: 0; }
 .plan-column:first-child { padding-left: 0; }
@@ -354,7 +369,7 @@ main { background: var(--surface); }
 .app-features { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px; margin-top: 32px; }
 .app-features dd { margin-top: 8px; color: var(--ink-muted); font-size: 13px; line-height: 1.8; }
 .location-note { margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--ink-muted); font-size: 12px; line-height: 1.8; }
-.app-work-photo img { display: block; height: 340px; width: 100%; object-fit: cover; border-radius: var(--radius-sm); }
+.app-work-photo img { display: block; height: 340px; width: 100%; object-fit: cover; object-position: 50% 16%; border-radius: var(--radius-sm); }
 .app-work-photo figcaption { margin-top: 12px; color: var(--ink-muted); font-size: 12px; line-height: 1.8; }
 .help-intro { grid-template-columns: 1.15fr 1fr; min-height: 340px; }
 .contact-details { padding-left: 30px; }
@@ -436,8 +451,6 @@ img.xero-logo { display: block; width: 32px; height: 32px; flex-shrink: 0; objec
  .home-pricing h2 { font-size: 31px; }
  .home-pricing-inner > a { margin-top: 14px; }
  .home-pricing h2 span { margin-left: 0; font-size: 13px; }
- .trial-callout { padding-block: 32px; }
- .trial-callout-inner { display: block; }
  .trial-callout h2 { font-size: 24px; }
  .trial-callout-inner > div:last-child { margin-top: 22px; gap: 18px; flex-wrap: wrap; font-size: 13px; }
  .page-intro { grid-template-columns: 1fr; gap: 32px; padding-block: 40px; }
@@ -551,9 +564,6 @@ img.xero-logo { display: block; width: 32px; height: 32px; flex-shrink: 0; objec
 	details[open]::details-content { height: auto; }
 }
 
-/* The hero photo drifts a few percent sideways over half a minute: light, not movement. */
-@keyframes hero-pan { from { object-position: 38% center; } to { object-position: 50% center; } }
-.home-hero-photo { animation: hero-pan 30s ease-in-out infinite alternate; }
 
 /* Screenshot demos (components/shot-demo.tsx): drawn over a real screen, played once. */
 .shot-demo { position: absolute; inset: 0; pointer-events: none; }
@@ -572,7 +582,6 @@ img.xero-logo { display: block; width: 32px; height: 32px; flex-shrink: 0; objec
 @keyframes demo-in { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
-	.home-hero-photo { animation: none; }
 	.shot-demo { display: none; }
 	details::details-content { transition: none; }
 }

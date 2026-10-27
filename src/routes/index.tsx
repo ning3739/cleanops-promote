@@ -95,10 +95,10 @@ function Home() {
 				</div>
 				<div className="home-hero-media">
 					<img
-						src={photos.officeVacuum.src}
-						alt={photos.officeVacuum.alt}
-						width={photos.officeVacuum.width}
-						height={photos.officeVacuum.height}
+						src={photos.crewArrival.src}
+						alt={photos.crewArrival.alt}
+						width={photos.crewArrival.width}
+						height={photos.crewArrival.height}
 						fetchPriority="high"
 						decoding="async"
 						className="home-hero-photo"

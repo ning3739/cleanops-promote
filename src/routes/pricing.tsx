@@ -1,6 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import {
+	animate,
+	m,
+	useMotionValue,
+	useReducedMotion,
+	useTransform,
+} from "motion/react";
+import { useEffect, useState } from "react";
 import { ButtonLink } from "#/components/button";
+import { MotionProvider } from "#/components/motion-provider";
 import { Faq } from "#/components/section";
 import { pricingFaq } from "#/content/faq";
 import {
@@ -39,10 +47,39 @@ const audience: Record<string, string> = {
 	BUSINESS: "For several teams and commercial work",
 };
 
+// A price that counts to its new value when the billing period changes. Screen readers get the final figure only.
+function Price({ amount }: { amount: string }) {
+	const value = useMotionValue(Number(amount));
+	const text = useTransform(value, (v) => money(String(Math.round(v))));
+	const reduceMotion = useReducedMotion();
+	useEffect(() => {
+		if (reduceMotion) {
+			value.set(Number(amount));
+			return;
+		}
+		const controls = animate(value, Number(amount), {
+			duration: 0.45,
+			ease: [0.25, 0.1, 0.25, 1],
+		});
+		return () => controls.stop();
+	}, [amount, reduceMotion, value]);
+	return (
+		<>
+			<m.span aria-hidden="true">{text}</m.span>
+			<span className="sr-only">{money(amount)}</span>
+		</>
+	);
+}
+
+const billingOptions = [
+	{ value: "monthly", label: "Monthly" },
+	{ value: "annual", label: "Yearly" },
+] as const;
+
 function Pricing() {
 	const [billing, setBilling] = useState<"monthly" | "annual">("monthly");
 	return (
-		<>
+		<MotionProvider>
 			<section className="page-intro pricing-intro marketing-container">
 				<div>
 					<p className="section-label">Pricing</p>
@@ -64,20 +101,24 @@ function Pricing() {
 			<section className="plans-section marketing-container">
 				<div className="billing-row">
 					<fieldset aria-label="Billing period" className="billing-switch">
-						<button
-							type="button"
-							aria-pressed={billing === "monthly"}
-							onClick={() => setBilling("monthly")}
-						>
-							Monthly
-						</button>
-						<button
-							type="button"
-							aria-pressed={billing === "annual"}
-							onClick={() => setBilling("annual")}
-						>
-							Yearly
-						</button>
+						{billingOptions.map((option) => (
+							<button
+								key={option.value}
+								type="button"
+								aria-pressed={billing === option.value}
+								onClick={() => setBilling(option.value)}
+							>
+								{billing === option.value && (
+									<m.span
+										layoutId="billing-pill"
+										className="billing-pill"
+										aria-hidden="true"
+										transition={{ type: "spring", stiffness: 500, damping: 38 }}
+									/>
+								)}
+								<span>{option.label}</span>
+							</button>
+						))}
 					</fieldset>
 					<p>Two months free with yearly billing.</p>
 				</div>
@@ -97,7 +138,11 @@ function Pricing() {
 								</header>
 								<div className="plan-price" aria-live="polite">
 									<strong>
-										{money(billing === "monthly" ? plan.monthly : plan.annual)}
+										<Price
+											amount={
+												billing === "monthly" ? plan.monthly : plan.annual
+											}
+										/>
 									</strong>
 									<span>
 										/ {billing === "monthly" ? "month" : "year"} + GST
@@ -239,6 +284,6 @@ function Pricing() {
 					<Faq items={pricingFaq} />
 				</div>
 			</section>
-		</>
+		</MotionProvider>
 	);
 }
