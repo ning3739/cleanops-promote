@@ -396,14 +396,8 @@ function Privacy() {
 			<h2>10. Your rights</h2>
 			<p>
 				You can ask for the personal information we hold about you and ask us to
-				correct it. You can delete your own account from your account settings
-				in the web app or the field app. Your name, email, phone, password,
-				authenticator and devices are erased. The companies you worked for keep
-				their business records (for example the jobs you did and the hours you
-				worked) with your name replaced by “Deleted user”, and they keep their
-				own staff record about you. The owner of a company that is still open
-				must hand it over or close it first. You can also leave one company
-				without deleting your account.
+				correct it. To delete your account, see{" "}
+				<a href="#delete-account">section 11</a>.
 			</p>
 			<p>
 				Requests about information a company holds about you (for example your
@@ -421,7 +415,56 @@ function Privacy() {
 				<a href="https://www.privacy.org.nz">privacy.org.nz</a>.
 			</p>
 
-			<h2>11. Cookies and the website</h2>
+			{/* Linked as /privacy#delete-account from Google Play's account deletion field and the App Store listing: keep the id. */}
+			<h2 id="delete-account" className="scroll-mt-24">
+				11. Deleting your CleanOps account
+			</h2>
+			<p>
+				You can delete your CleanOps account at any time. You do not need to
+				reinstall the app to do it.
+			</p>
+			<ul>
+				<li>
+					<strong>In the CleanOps Field app:</strong> open <em>Me</em>, tap{" "}
+					<em>Delete my account</em>, enter your password and type DELETE.
+				</li>
+				<li>
+					<strong>In the web app:</strong> open <em>Account</em> and choose{" "}
+					<em>Delete my account</em>.
+				</li>
+				<li>
+					<strong>Without the app:</strong> email{" "}
+					<a href={`mailto:${email}?subject=Delete%20my%20CleanOps%20account`}>
+						{email}
+					</a>{" "}
+					from the email address you sign in with, and say you want your account
+					deleted. We check that the request comes from you, delete the account
+					and confirm by email, within 20 working days.
+				</li>
+			</ul>
+			<p>
+				<strong>What is deleted:</strong> your name, email, phone, password,
+				authenticator and devices, at once, and you are signed out everywhere.
+				They disappear from backups when the backups expire, within 14 days.
+			</p>
+			<p>
+				<strong>What is kept:</strong> the companies you worked for keep their
+				business records, for example the jobs you did, the photos and notes you
+				added and the hours you worked, with your name replaced by “Deleted
+				user”, and they keep their own staff record about you. They keep these
+				for as long as their account is open and the law requires (for example
+				for pay and tax); they are deleted when the company’s data is deleted
+				(section 8). To have that information removed or corrected, ask the
+				company.
+			</p>
+			<p>
+				<strong>Company owners:</strong> the owner of a company that is still
+				open must first hand it over to another admin (Settings, Members) or
+				close it (Settings, Organisation) in the web app, then delete their
+				account. You can also leave one company without deleting your account.
+			</p>
+
+			<h2>12. Cookies and the website</h2>
 			<p>
 				The CleanOps web app uses essential cookies to keep you signed in and to
 				protect against forged requests. You cannot switch them off and still
@@ -432,7 +475,7 @@ function Privacy() {
 				your sign-in and its offline queue on the phone.
 			</p>
 
-			<h2>12. Changes to this policy</h2>
+			<h2>13. Changes to this policy</h2>
 			<p>
 				We may update this policy from time to time, for example as CleanOps or
 				the law changes. The date at the top shows the version in force. If a
@@ -440,7 +483,7 @@ function Privacy() {
 				tell account owners by email or in the app before it takes effect.
 			</p>
 
-			<h2>13. Contact</h2>
+			<h2>14. Contact</h2>
 			<p>
 				Privacy officer, {legalName}, {city}, New Zealand. Email{" "}
 				<a href={`mailto:${email}`}>{email}</a>.
