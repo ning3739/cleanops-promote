@@ -24,10 +24,12 @@ export const site = {
 		register: "https://app.cleanops.nz/register",
 	},
 	stores: {
-		// PLACEHOLDER: the final bundle id / package name and store ids are not decided. These must match
-		// cleanops-mobile/app.json and cleanops-web/src/shared/env.ts once they are.
-		appStore: "https://apps.apple.com/nz/app/cleanops/id0000000000",
-		appStoreId: "0000000000",
+		// CleanOps Field on the App Store (bundle com.ning3739.cleanops-mobile). The id also drives Safari's Smart App
+		// Banner on /app.
+		appStore: "https://apps.apple.com/us/app/cleanops-field/id6821582460",
+		appStoreId: "6821582460",
+		// PLACEHOLDER: the Android package name is not decided. It must match cleanops-mobile/app.json and
+		// cleanops-web/src/shared/env.ts once it is.
 		playStore:
 			"https://play.google.com/store/apps/details?id=nz.cleanops.field",
 		live: true,
