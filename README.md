@@ -72,10 +72,10 @@ npm run smoke -- https://cleanops.nz
 
 ## Before launch
 
-- `src/site.ts`: the NZBN (a real one has 13 digits), the legal company name, the App Store id and the Play package
-  name. `stores.live` is `true`, so the field app page shows no "coming soon" note; the Smart App Banner appears once
-  `appStoreId` is a real id. The package name must match `cleanops-mobile/app.json` and
-  `cleanops-web/src/shared/env.ts`, which disagree today.
+- `src/site.ts`: the NZBN (a real one has 13 digits) and the legal company name. `stores.live` is `true`, so the
+  `/app` page shows no "coming soon" note. The Play link uses the package `com.ning3739.cleanopsmobile`, the same as
+  `cleanops-mobile/app.json` and `cleanops-web/src/shared/env.ts`; it opens once the app is in production on
+  Google Play.
 - Privacy and terms are plain-language drafts written from the product's rules. Have them reviewed, then set
   `legalReviewed` and `legalUpdated` in `src/site.ts`; until then both pages show a draft notice.
 - Confirm the Cloudflare deployment token has Worker and zone permissions before the first publish.

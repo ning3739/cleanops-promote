@@ -28,10 +28,10 @@ export const site = {
 		// Banner on /app.
 		appStore: "https://apps.apple.com/us/app/cleanops-field/id6821582460",
 		appStoreId: "6821582460",
-		// PLACEHOLDER: the Android package name is not decided. It must match cleanops-mobile/app.json and
-		// cleanops-web/src/shared/env.ts once it is.
+		// CleanOps on Google Play (package com.ning3739.cleanopsmobile, cleanops-mobile/app.json); the same link is in
+		// cleanops-web/src/shared/env.ts.
 		playStore:
-			"https://play.google.com/store/apps/details?id=nz.cleanops.field",
+			"https://play.google.com/store/apps/details?id=com.ning3739.cleanopsmobile",
 		live: true,
 	},
 	trialDays: 14,
