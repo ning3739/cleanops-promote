@@ -131,7 +131,7 @@ function Home() {
 				<div className="marketing-container people-layout">
 					<div className="people-copy">
 						<p className="section-label">On site</p>
-						<h2>The field app</h2>
+						<h2>The CleanOps app</h2>
 						<p>
 							Addresses, access instructions, checklists and time records for
 							iPhone and Android. Work offline and sync when connected.
@@ -141,7 +141,7 @@ function Home() {
 							<li>Cleaners see their own work, without customer prices</li>
 						</ul>
 						<a href="/app" className="text-link">
-							See the field app{" "}
+							See the CleanOps app{" "}
 							<ArrowRight className="size-4" aria-hidden="true" />
 						</a>
 					</div>
@@ -183,8 +183,8 @@ function Home() {
 						<p className="section-label">Product overview</p>
 						<h2>See a job in CleanOps.</h2>
 						<p>
-							A {recording.seconds}-second walkthrough of the office view, field
-							app and invoice.
+							A {recording.seconds}-second walkthrough of the office view, the
+							CleanOps app and the invoice.
 						</p>
 					</div>
 					<DemoVideo />

@@ -25,11 +25,11 @@ function Privacy() {
 			<p>
 				This policy explains how {legalName} (“we”, “us”), the company behind
 				CleanOps, handles personal information. It covers the CleanOps website,
-				the office web app, the CleanOps field app, the customer portal and the
-				emails the service sends. We follow the Privacy Act 2020 and its
-				Information Privacy Principles (IPPs). This policy is also our notice
-				under IPP 3 and IPP 3A of the information we collect, including
-				information we receive from someone other than you.
+				the office web app, the CleanOps app for iPhone and Android, the
+				customer portal and the emails the service sends. We follow the Privacy
+				Act 2020 and its Information Privacy Principles (IPPs). This policy is
+				also our notice under IPP 3 and IPP 3A of the information we collect,
+				including information we receive from someone other than you.
 			</p>
 
 			<h2>1. Two roles: the cleaning company and us</h2>
@@ -96,23 +96,23 @@ function Privacy() {
 					to them.
 				</li>
 				<li>
-					<strong>Job photos:</strong> photos taken in the field app before,
+					<strong>Job photos:</strong> photos taken in the CleanOps app before,
 					during and after a job, with the time taken, who took them and any
-					caption. The field app does not attach the camera’s location data to
-					the photos it takes.
+					caption. The CleanOps app does not attach the camera’s location data
+					to the photos it takes.
 				</li>
 				<li>
 					<strong>Location, only when sharing is on:</strong> location sharing
 					is a Business-plan feature. It works only if the company switches it
-					on and the staff member then turns on sharing in the field app. While
-					that person is on duty, the field app sends the phone’s location,
-					including when the app is closed or in the background, with its
-					accuracy and speed and the device name. Location is never collected
-					while the person is off duty. Sharing ends automatically after 4 hours
-					without a location, or 16 hours in total. The office sees a live map
-					and whether the person has arrived at the job’s property. Location is
-					context only; it never changes anyone’s recorded hours. The person can
-					turn sharing off in the app at any time.
+					on and the staff member then turns on sharing in the CleanOps app.
+					While that person is on duty, the CleanOps app sends the phone’s
+					location, including when the app is closed or in the background, with
+					its accuracy and speed and the device name. Location is never
+					collected while the person is off duty. Sharing ends automatically
+					after 4 hours without a location, or 16 hours in total. The office
+					sees a live map and whether the person has arrived at the job’s
+					property. Location is context only; it never changes anyone’s recorded
+					hours. The person can turn sharing off in the app at any time.
 				</li>
 				<li>
 					<strong>Device and sign-in information:</strong> device name, app
@@ -122,9 +122,9 @@ function Privacy() {
 				</li>
 				<li>
 					<strong>Offline work on the phone:</strong> when there is no signal,
-					the field app keeps changes, photos and locations on the phone until
-					they can be sent. They are tied to the account and company that made
-					them and are removed from the phone once sent.
+					the CleanOps app keeps changes, photos and locations on the phone
+					until they can be sent. They are tied to the account and company that
+					made them and are removed from the phone once sent.
 				</li>
 				<li>
 					<strong>Activity and technical logs:</strong> an audit record of
@@ -145,7 +145,7 @@ function Privacy() {
 			<p>
 				Some of this information is needed to use CleanOps. Without an email
 				address you cannot have an account. Without location permission,
-				location sharing will not work, but the rest of the field app still
+				location sharing will not work, but the rest of the CleanOps app still
 				does.
 			</p>
 
@@ -286,7 +286,7 @@ function Privacy() {
 				<li>
 					<strong>Expo</strong> (United States), <strong>Apple</strong> and{" "}
 					<strong>Google Firebase</strong>: deliver push notifications to the
-					field app. They receive the device token and the text of the
+					CleanOps app. They receive the device token and the text of the
 					notification.
 				</li>
 				<li>
@@ -425,7 +425,7 @@ function Privacy() {
 			</p>
 			<ul>
 				<li>
-					<strong>In the CleanOps Field app:</strong> open <em>Me</em>, tap{" "}
+					<strong>In the CleanOps app:</strong> open <em>Me</em>, tap{" "}
 					<em>Delete my account</em>, enter your password and type DELETE.
 				</li>
 				<li>
@@ -471,8 +471,8 @@ function Privacy() {
 				sign in. Our hosting provider may set essential security cookies to
 				block attacks. The website and web app use no advertising or tracking
 				cookies and no third-party analytics. If you choose a light or dark
-				theme, that choice is stored in your own browser. The field app stores
-				your sign-in and its offline queue on the phone.
+				theme, that choice is stored in your own browser. The CleanOps app
+				stores your sign-in and its offline queue on the phone.
 			</p>
 
 			<h2>13. Changes to this policy</h2>

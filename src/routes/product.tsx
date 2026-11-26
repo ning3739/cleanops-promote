@@ -43,7 +43,7 @@ export const Route = createFileRoute("/product")({
 		pageHead(
 			"/product",
 			"Product — CleanOps",
-			"Quotes, recurring jobs, the field app, photo checklists, review, GST invoices, hours for Xero Payroll, complaints and rework, assets and reports.",
+			"Quotes, recurring jobs, the CleanOps app, photo checklists, review, GST invoices, hours for Xero Payroll, complaints and rework, assets and reports.",
 		),
 	component: Product,
 });
@@ -120,7 +120,7 @@ const stages: Stage[] = [
 	},
 	{
 		id: "do",
-		step: "Field app",
+		step: "CleanOps app",
 		icon: Smartphone,
 		title: "Job details and checklists on site.",
 		lead: "iPhone and Android. Everything is saved on the phone and sent when it can be.",

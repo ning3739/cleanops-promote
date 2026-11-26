@@ -16,7 +16,7 @@ export function SiteFooter() {
 					<h2>CleanOps</h2>
 					<a href="/product">Product</a>
 					<a href="/pricing">Pricing</a>
-					<a href="/app">Field app</a>
+					<a href="/app">CleanOps app</a>
 					<a href="/help">Help & contact</a>
 				</nav>
 				<nav aria-label="Footer account and legal links">

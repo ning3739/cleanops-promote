@@ -10,7 +10,7 @@ export const Route = createFileRoute("/app")({
 	head: () => {
 		const head = pageHead(
 			"/app",
-			"The CleanOps field app — for iPhone and Android",
+			"The CleanOps app for iPhone and Android",
 			"Your jobs, checklists, photos and hours on your phone. Works without signal. Free for cleaners invited by their company.",
 		);
 		return {
@@ -83,7 +83,7 @@ function FieldAppPage() {
 			<section className="page-intro download-intro marketing-container">
 				<div>
 					<p className="section-label">iPhone & Android</p>
-					<h1>The CleanOps field app.</h1>
+					<h1>The CleanOps app.</h1>
 					<p>
 						Your jobs, checklists, photos and hours on your phone. Free for
 						cleaners invited by their company.

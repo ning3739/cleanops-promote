@@ -51,10 +51,10 @@ function Terms() {
 			<h2>2. What CleanOps is, and is not</h2>
 			<p>
 				CleanOps is software for running a cleaning business: clients, quotes,
-				jobs, scheduling, the field app, checklists, photos, location sharing,
-				hours and invoices. It is a tool. It does not provide accounting, tax,
-				payroll, legal, health and safety or employment advice, it is not a
-				payment processor, and it does not make decisions for you.
+				jobs, scheduling, the CleanOps app, checklists, photos, location
+				sharing, hours and invoices. It is a tool. It does not provide
+				accounting, tax, payroll, legal, health and safety or employment advice,
+				it is not a payment processor, and it does not make decisions for you.
 			</p>
 			<p>You remain responsible for your business, including:</p>
 			<ul>
@@ -322,12 +322,12 @@ function Terms() {
 				or changes, or for data once it has left CleanOps for them.
 			</p>
 			<p>
-				The field app is licensed, not sold, to your users under these terms. If
-				it was downloaded from the Apple App Store, these terms are between you
-				and us, not Apple; Apple has no obligation to provide maintenance or
-				support and no responsibility for the app or any claim about it, and
-				Apple and its subsidiaries may enforce the app-store terms of this
-				section as third-party beneficiaries.
+				The CleanOps app for iPhone and Android is licensed, not sold, to your
+				users under these terms. If it was downloaded from the Apple App Store,
+				these terms are between you and us, not Apple; Apple has no obligation
+				to provide maintenance or support and no responsibility for the app or
+				any claim about it, and Apple and its subsidiaries may enforce the
+				app-store terms of this section as third-party beneficiaries.
 			</p>
 
 			<h2>14. Availability and changes</h2>
