@@ -9,7 +9,7 @@ import { ThemeToggle } from "./theme-toggle";
 const nav = [
 	{ href: "/product", path: "/product", label: "Product" },
 	{ href: "/pricing", path: "/pricing", label: "Pricing" },
-	{ href: "/app", path: "/app", label: "Field app" },
+	{ href: "/app", path: "/app", label: "CleanOps app", short: "App" },
 	{ href: "/help", path: "/help", label: "Help" },
 ] as const;
 
@@ -71,7 +71,7 @@ export function SiteHeader() {
 						aria-current={item.path === pathname ? "page" : undefined}
 						className="flex min-h-11 items-center justify-center text-[14px] text-ink-muted no-underline hover:text-ink aria-[current=page]:font-medium aria-[current=page]:text-ink"
 					>
-						{item.label}
+						{"short" in item ? item.short : item.label}
 					</a>
 				))}
 			</nav>

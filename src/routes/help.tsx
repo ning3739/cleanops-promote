@@ -44,9 +44,9 @@ function Help() {
 						<div>
 							<dt>Signing in</dt>
 							<dd>
-								Use the web app for office work and the field app for cleaning
-								jobs. You can reset your password or request an email sign-in
-								link.
+								Use the web app for office work and the CleanOps app for
+								cleaning jobs. You can reset your password or request an email
+								sign-in link.
 							</dd>
 						</div>
 						<div>

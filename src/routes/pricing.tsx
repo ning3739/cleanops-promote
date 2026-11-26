@@ -189,7 +189,7 @@ function Pricing() {
 										{(previous
 											? added.map((f) => f.label)
 											: [
-													"Jobs, schedule and field app",
+													"Jobs, schedule and the CleanOps app",
 													"Checklists and photos",
 													"GST invoices and Xero",
 													"Hours export",

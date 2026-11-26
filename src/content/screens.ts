@@ -27,27 +27,27 @@ export const screens = {
 	fieldToday: {
 		src: "/screens/field-today.webp",
 		...phone,
-		alt: "The field app’s Today screen: the job running now and the hours so far.",
+		alt: "The CleanOps app’s Today screen: the job running now and the hours so far.",
 	},
 	fieldJob: {
 		src: "/screens/field-job.webp",
 		...phone,
-		alt: "A job in the field app with its checklist, photos, notes and the Finish job button.",
+		alt: "A job in the CleanOps app with its checklist, photos, notes and the Finish job button.",
 	},
 	fieldChecklist: {
 		src: "/screens/field-checklist.webp",
 		...phone,
-		alt: "The job checklist in the field app; a camera icon marks items that need a photo.",
+		alt: "The job checklist in the CleanOps app; a camera icon marks items that need a photo.",
 	},
 	fieldHours: {
 		src: "/screens/field-hours.webp",
 		...phone,
-		alt: "The field app’s Hours screen: the running timer and this pay period.",
+		alt: "The CleanOps app’s Hours screen: the running timer and this pay period.",
 	},
 	fieldSchedule: {
 		src: "/screens/field-schedule.webp",
 		...phone,
-		alt: "The next fortnight of jobs in the field app, each waiting for the cleaner to confirm.",
+		alt: "The next fortnight of jobs in the CleanOps app, each waiting for the cleaner to confirm.",
 	},
 	portalVisits: {
 		src: "/screens/portal-safari-visits.webp",

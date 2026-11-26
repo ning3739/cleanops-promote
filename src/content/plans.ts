@@ -43,7 +43,7 @@ export const featureLabels: { key: FeatureKey; label: string }[] = [
 ];
 
 export const everyPlan =
-	"jobs and recurring jobs, quotes, scheduling, the field app, checklists and photos, completion reports, GST invoices with Xero, hours export and data export.";
+	"jobs and recurring jobs, quotes, scheduling, the CleanOps app, checklists and photos, completion reports, GST invoices with Xero, hours export and data export.";
 
 const nzd = new Intl.NumberFormat("en-NZ", {
 	style: "currency",
